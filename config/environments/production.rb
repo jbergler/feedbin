@@ -1,10 +1,16 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  config.hosts << "feedbin.com"
-  config.hosts << "api.feedbin.com"
-  config.hosts << "api.feedbin.me"
-  config.hosts << "feedbin"
-  config.hosts << "api.feedbin"
+
+  app_domain = "feedbin.com"
+  app_domain = ENV["DEFAULT_URL_OPTIONS_HOST"] if ENV["DEFAULT_URL_OPTIONS_HOST"].present?
+  config.hosts << "#{app_domain}"
+  config.hosts << "api.#{app_domain}"
+
+  if app_domain == "feedbin.com"
+    config.hosts << "api.feedbin.me"
+    config.hosts << "feedbin"
+    config.hosts << "api.feedbin"
+  end
 
   # Code is not reloaded between requests.
   config.cache_classes = true
